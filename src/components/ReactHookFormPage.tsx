@@ -1,66 +1,18 @@
-import React, { useEffect } from 'react';
-import { Resolver, SubmitHandler, useForm } from 'react-hook-form';
+import React from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useAppSelector } from '../store/redux-hooks';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-
-const validationSchema = yup.object().shape({
-  name: yup.string().required(),
-  age: yup.number().positive('Age must be a positive number').required(),
-  email: yup.string().email('Invalid email').required(),
-  password: yup
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .required(),
-  confirmPassword: yup
-    .string()
-    .required('resetPasswordForm.mandatoryInput')
-    .oneOf([yup.ref('password')], 'Passwords must match'),
-  gender: yup.string().required(),
-  accept: yup.boolean().oneOf([true]),
-  picture: yup.string().url('Invalid URL').required(),
-  country: yup.string().required(),
-});
-
-interface IFormInput {
-  name: string;
-  age: number;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  gender: string;
-  accept: boolean;
-  picture: string;
-  country: string;
-}
-
-const resolver = yupResolver(validationSchema) as Resolver<IFormInput>;
+import { defaultValues, IFormInput, resolver } from '../utils/forms-utils';
+import '../style.css';
 
 export default function ReactHookFormPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isValidating },
+    formState: { errors },
   } = useForm<IFormInput>({
     resolver,
-    defaultValues: {
-      name: '',
-      age: 18,
-      email: '',
-      password: '',
-      confirmPassword: '',
-      gender: '',
-      accept: true,
-      picture: '',
-      country: '',
-    },
+    defaultValues,
   });
-
-  useEffect(() => {
-    console.log(isValid);
-    console.log(isValidating);
-    console.log(errors);
-  }, [isValid, isValidating, errors]);
 
   const { countries } = useAppSelector((state) => state.countries);
 
@@ -75,20 +27,22 @@ export default function ReactHookFormPage() {
         <div>
           <label htmlFor="name">name</label>
           <input type="text" {...register('name')} id="name" />
-          {errors?.name && <p>{errors?.name?.message} </p>}
+          <p className={'error-message'}>{errors?.name?.message} </p>
         </div>
         <div>
           <label htmlFor="age">age</label>
           <input type="number" {...register('age')} id="age" />
+          <p className={'error-message'}>{errors.age?.message}</p>
         </div>
         <div>
           <label htmlFor="email">email</label>
           <input type="email" {...register('email')} id="email" />
-          {errors?.email && <p>{errors?.email?.message}</p>}
+          <p className={'error-message'}>{errors?.email?.message}</p>
         </div>
         <div>
           <label htmlFor="password">password</label>
           <input type="password" {...register('password')} id="password" />
+          <p className={'error-message'}>{errors.password?.message}</p>
         </div>
         <div>
           <label htmlFor="confirmPassword">repeat password</label>
@@ -97,6 +51,7 @@ export default function ReactHookFormPage() {
             {...register('confirmPassword')}
             id="confirmPassword"
           />
+          <p className={'error-message'}>{errors.confirmPassword?.message}</p>
         </div>
         <div>
           <label htmlFor="gender">gender</label>
@@ -107,6 +62,7 @@ export default function ReactHookFormPage() {
             <option value="Non-Binary">Non-Binary</option>
             <option value="not-say">Prefer not to say</option>
           </select>
+          <p className={'error-message'}>{errors.gender?.message}</p>
         </div>
         <div>
           <label htmlFor="accept">accept</label>
@@ -115,6 +71,7 @@ export default function ReactHookFormPage() {
         <div>
           <label htmlFor="picture">picture</label>
           <input type="file" {...register('picture')} id="picture" />
+          <p className={'error-message'}>{errors.picture?.message}</p>
         </div>
         <div>
           <label htmlFor="country">countries</label>
@@ -129,11 +86,10 @@ export default function ReactHookFormPage() {
               <option key={index} value={country.name.common} />
             ))}
           </datalist>
+          <p className={'error-message'}>{errors.country?.message}</p>
         </div>
         <div>
-          <button type="submit" disabled={isValid}>
-            Submit
-          </button>
+          <button type="submit">Submit</button>
         </div>
       </form>
     </div>
