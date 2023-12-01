@@ -10,7 +10,7 @@ export interface IFormInput {
   confirmPassword: string;
   gender: string;
   accept: boolean;
-  picture: string;
+  picture: File;
   country: string;
 }
 
@@ -52,13 +52,17 @@ const validationSchema = yup.object().shape({
         value &&
         (value as FileList)[0] &&
         ['image/jpeg', 'image/png'].includes((value as FileList)[0].type)
-    ),
+    )
+    .required('File no choose'),
   country: yup.string().required('Choose the country'),
 });
 
 export const resolver = yupResolver(
   validationSchema
 ) as unknown as Resolver<IFormInput>;
+
+const emptyFile = new File([], 'empty.txt', { type: 'text/plain' });
+
 export const defaultValues: IFormInput = {
   name: '',
   age: 18,
@@ -67,6 +71,15 @@ export const defaultValues: IFormInput = {
   confirmPassword: '',
   gender: '',
   accept: true,
-  picture: '',
+  picture: emptyFile,
   country: '',
+};
+
+export const convertFileToBase64 = (file: File) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+    reader.readAsDataURL(file);
+  });
 };

@@ -1,7 +1,12 @@
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useAppSelector } from '../store/redux-hooks';
-import { defaultValues, IFormInput, resolver } from '../utils/forms-utils';
+import { useActions, useAppSelector } from '../store/redux-hooks';
+import {
+  convertFileToBase64,
+  defaultValues,
+  IFormInput,
+  resolver,
+} from '../utils/forms-utils';
 import '../style.css';
 
 export default function ReactHookFormPage() {
@@ -14,10 +19,12 @@ export default function ReactHookFormPage() {
     defaultValues,
   });
 
+  const { setHookFormData } = useActions();
   const { countries } = useAppSelector((state) => state.countries);
 
-  const submit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+  const submit: SubmitHandler<IFormInput> = async (data) => {
+    data.picture = (await convertFileToBase64(data.picture[0])) as File;
+    setHookFormData(data);
   };
 
   return (
