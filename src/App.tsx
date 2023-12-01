@@ -1,26 +1,26 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import ReactHookFormPage from "./components/ReactHookFormPage";
-import MainPage from "./components/MainPage";
-import UncontrolledFormPage from "./components/UncontrolledFormPage";
-import { useGetCountriesQuery } from "./services/countriesAPI";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ReactHookFormPage from './components/ReactHookFormPage';
+import MainPage from './components/MainPage';
+import UncontrolledFormPage from './components/UncontrolledFormPage';
+import { useGetCountriesQuery } from './services/countriesAPI';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <MainPage />,
   },
   {
-    path: "/react-hook-form",
+    path: '/react-hook-form',
     element: <ReactHookFormPage />,
   },
   {
-    path: "/uncontrolled-form",
+    path: '/uncontrolled-form',
     element: <UncontrolledFormPage />,
   },
 ]);
 
 function App() {
-  useGetCountriesQuery();
+  useGetCountriesQuery({});
 
   return <RouterProvider router={router} />;
 }

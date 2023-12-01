@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { countriesAPI, IResponse } from "../../services/countriesAPI";
+import { createSlice } from '@reduxjs/toolkit';
+import { countriesAPI, IResponse } from '../../services/countriesAPI';
 
 interface ISomeState {
   countries: IResponse[];
@@ -14,7 +14,7 @@ const initialState: ISomeState = {
 };
 
 export const countriesSlice = createSlice({
-  name: "different",
+  name: 'different',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -23,7 +23,7 @@ export const countriesSlice = createSlice({
       (state) => {
         state.countries = [];
         state.loading = true;
-      },
+      }
     );
     builder.addMatcher(
       countriesAPI.endpoints.getCountries.matchFulfilled,
@@ -31,7 +31,7 @@ export const countriesSlice = createSlice({
         state.countries = action.payload;
         state.loading = false;
         state.error = false;
-      },
+      }
     );
     builder.addMatcher(
       countriesAPI.endpoints.getCountries.matchRejected,
@@ -39,7 +39,7 @@ export const countriesSlice = createSlice({
         state.countries = [];
         state.loading = false;
         state.error = true;
-      },
+      }
     );
   },
 });

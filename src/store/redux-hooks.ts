@@ -1,7 +1,7 @@
-import { bindActionCreators } from "@reduxjs/toolkit";
-import { useDispatch, TypedUseSelectorHook, useSelector } from "react-redux";
-import { RootState } from "./store";
-import { countriesActions } from "./reducers/countriesSlice";
+import { bindActionCreators } from '@reduxjs/toolkit';
+import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
+import { RootState } from './store';
+import { countriesActions } from './reducers/countriesSlice';
 
 const actions = {
   ...countriesActions,

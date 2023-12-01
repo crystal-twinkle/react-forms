@@ -1,6 +1,6 @@
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { countriesAPI } from "../services/countriesAPI";
-import { countriesReducer } from "./reducers/countriesSlice";
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { countriesAPI } from '../services/countriesAPI';
+import { countriesReducer } from './reducers/countriesSlice';
 
 const rootReducer = combineReducers({
   [countriesAPI.reducerPath]: countriesAPI.reducer,
