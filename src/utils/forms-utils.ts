@@ -10,11 +10,11 @@ export interface IFormInput {
   confirmPassword: string;
   gender: string;
   accept: boolean;
-  picture: File;
+  picture: string;
   country: string;
 }
 
-const validationSchema = yup.object().shape({
+export const validationSchema = yup.object().shape({
   name: yup
     .string()
     .matches(/^[A-ZА-Я].*$/, 'Should start with an uppercase letter')
@@ -40,10 +40,7 @@ const validationSchema = yup.object().shape({
     .test(
       'fileSize',
       'File is too big',
-      (value) =>
-        value &&
-        (value as FileList)[0] &&
-        (value as FileList)[0].size <= 1024 * 1024
+      (value) => value && (value as FileList)[0] && (value as FileList)[0].size <= 1024 * 1024
     )
     .test(
       'fileFormat',
@@ -57,22 +54,18 @@ const validationSchema = yup.object().shape({
   country: yup.string().required('Choose the country'),
 });
 
-export const resolver = yupResolver(
-  validationSchema
-) as unknown as Resolver<IFormInput>;
-
-const emptyFile = new File([], 'empty.txt', { type: 'text/plain' });
+export const resolver = yupResolver(validationSchema) as unknown as Resolver<IFormInput>;
 
 export const defaultValues: IFormInput = {
-  name: '',
+  name: 'Kristina',
   age: 18,
-  email: '',
-  password: '',
-  confirmPassword: '',
-  gender: '',
+  email: 'kristi@example.com',
+  password: 'ff$3]FFG43',
+  confirmPassword: 'ff$3]FFG43',
+  gender: 'Female',
   accept: true,
-  picture: emptyFile,
-  country: '',
+  picture: '',
+  country: 'Jordan',
 };
 
 export const convertFileToBase64 = (file: File) => {

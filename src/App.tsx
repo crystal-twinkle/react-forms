@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import ReactHookFormPage from './components/ReactHookFormPage';
-import MainPage from './components/MainPage';
-import UncontrolledFormPage from './components/UncontrolledFormPage';
+import ControlledPage from './pages/ControlledPage';
+import MainPage from './pages/MainPage';
+import UncontrolledPage from './pages/UncontrolledPage.';
 import { useGetCountriesQuery } from './services/countriesAPI';
 
 const router = createBrowserRouter([
@@ -11,11 +11,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/react-hook-form',
-    element: <ReactHookFormPage />,
+    element: <ControlledPage />,
   },
   {
     path: '/uncontrolled-form',
-    element: <UncontrolledFormPage />,
+    element: <UncontrolledPage />,
   },
 ]);
 

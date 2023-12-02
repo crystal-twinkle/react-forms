@@ -18,29 +18,20 @@ export const countriesSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addMatcher(
-      countriesAPI.endpoints.getCountries.matchPending,
-      (state) => {
-        state.countries = [];
-        state.loading = true;
-      }
-    );
-    builder.addMatcher(
-      countriesAPI.endpoints.getCountries.matchFulfilled,
-      (state, action) => {
-        state.countries = action.payload;
-        state.loading = false;
-        state.error = false;
-      }
-    );
-    builder.addMatcher(
-      countriesAPI.endpoints.getCountries.matchRejected,
-      (state) => {
-        state.countries = [];
-        state.loading = false;
-        state.error = true;
-      }
-    );
+    builder.addMatcher(countriesAPI.endpoints.getCountries.matchPending, (state) => {
+      state.countries = [];
+      state.loading = true;
+    });
+    builder.addMatcher(countriesAPI.endpoints.getCountries.matchFulfilled, (state, action) => {
+      state.countries = action.payload;
+      state.loading = false;
+      state.error = false;
+    });
+    builder.addMatcher(countriesAPI.endpoints.getCountries.matchRejected, (state) => {
+      state.countries = [];
+      state.loading = false;
+      state.error = true;
+    });
   },
 });
 
