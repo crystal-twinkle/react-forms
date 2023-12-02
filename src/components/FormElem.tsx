@@ -17,7 +17,13 @@ const FormElem = forwardRef<HTMLInputElement, IFormElemProps>((props, ref) => {
       <label style={{ marginRight: '5px' }} htmlFor={id}>
         {id.replace(/^./, (str) => str.toUpperCase())}
       </label>
-      <input type={type} {...(register && { ...register(id) })} id={id} {...(ref && { ref })} />
+      <input
+        type={type}
+        {...(register && { ...register(id) })}
+        id={id}
+        {...(ref && { ref })}
+        autoComplete="on"
+      />
       <p className={'error-message'}>{errors && errors[id]?.message}</p>
       <p className={'error-message'}>{errorsUn && errorsUn[id]}</p>
     </div>

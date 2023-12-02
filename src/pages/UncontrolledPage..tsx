@@ -1,12 +1,14 @@
 import React, { createRef, FormEvent } from 'react';
 import GenderSelect from '../components/GenderSelect';
 import FormElem from '../components/FormElem';
-import { IFormInput, validationSchema } from '../utils/forms-utils';
+import { convertFileToBase64, IFormInput, validationSchema } from '../utils/forms-utils';
 import Countries from '../components/Countries';
 import { ValidationError } from 'yup';
 import { useActions, useAppSelector } from '../store/redux-hooks';
+import { useNavigate } from 'react-router-dom';
 
 export default function UncontrolledPage() {
+  const navigate = useNavigate();
   const nameRef = createRef<HTMLInputElement>();
   const ageRef = createRef<HTMLInputElement>();
   const emailRef = createRef<HTMLInputElement>();
@@ -28,13 +30,15 @@ export default function UncontrolledPage() {
       password: passwordRef.current?.value || '',
       confirmPassword: repeatPasswordRef.current?.value || '',
       gender: genderRef.current?.value || '',
-      picture: pictureRef.current?.value || '',
+      picture: pictureRef.current?.files || '',
       accept: acceptRef.current?.checked || false,
       country: countryRef.current?.value || '',
     };
     try {
       await validationSchema.validate(data, { abortEarly: false });
+      data.picture = (await convertFileToBase64(data.picture[0] as unknown as File)) as string;
       setUncontrolledData(data);
+      navigate('/', { state: { from: '/uncontrolled-form' } });
     } catch (errors) {
       const errorsUpd: Record<string, string> = {};
       if (errors instanceof ValidationError) {
@@ -50,6 +54,7 @@ export default function UncontrolledPage() {
 
   return (
     <div>
+      <h2>Uncontrolled Form</h2>
       <form onSubmit={handleSubmit}>
         <FormElem type="string" id="name" ref={nameRef} errorsUn={errors} />
         <FormElem type="number" id="age" ref={ageRef} errorsUn={errors} />

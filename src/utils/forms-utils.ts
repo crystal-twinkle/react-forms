@@ -10,7 +10,7 @@ export interface IFormInput {
   confirmPassword: string;
   gender: string;
   accept: boolean;
-  picture: string;
+  picture: string | FileList;
   country: string;
 }
 
@@ -29,22 +29,28 @@ export const validationSchema = yup.object().shape({
     )
     .required(),
   confirmPassword: yup
-    .string()
+    .mixed()
     .oneOf([yup.ref('password')], 'Passwords must match')
     .required('Fill password field'),
   gender: yup.string().required('Select gender'),
   accept: yup.boolean().oneOf([true], 'Accept Terms'),
   picture: yup
-    .string()
-    .required()
-    .test('fileFormat', 'Invalid file format', (value) => {
-      return ['png', 'jpeg', 'jpg'].includes(value.split('.').at(-1) || '');
-    })
-    .test('fileSize', 'File is too big', (value) => {
-      const encoder = new TextEncoder();
-      const encodedBytes = encoder.encode(value);
-      return encodedBytes.length <= 1024 * 1024;
-    }),
+    .mixed()
+    .required('You must select an image')
+    .test(
+      'fileSize',
+      'File is too big',
+      (value) => value && (value as FileList)[0] && (value as FileList)[0].size <= 1024 * 1024
+    )
+    .test(
+      'fileFormat',
+      'Invalid file format',
+      (value) =>
+        value &&
+        (value as FileList)[0] &&
+        ['image/jpeg', 'image/png'].includes((value as FileList)[0].type)
+    )
+    .required('File no choose'),
   country: yup.string().required('Choose the country'),
 });
 

@@ -6,6 +6,7 @@ import '../style.css';
 import Countries from '../components/Countries';
 import GenderSelect from '../components/GenderSelect';
 import FormElem from '../components/FormElem';
+import { useNavigate } from 'react-router-dom';
 
 export default function ControlledPage() {
   const {
@@ -16,25 +17,25 @@ export default function ControlledPage() {
     resolver,
     defaultValues,
   });
+  const navigate = useNavigate();
 
   const { setHookFormData } = useActions();
 
   const submit: SubmitHandler<IFormInput> = async (data) => {
     data.picture = (await convertFileToBase64(data.picture[0] as unknown as File)) as string;
-
     setHookFormData(data);
+    navigate('/', { state: { from: '/react-hook-form' } });
   };
 
   return (
     <div>
-      <h2>ReactHookForm</h2>
-      <form onSubmit={handleSubmit(submit)}>
+      <h2>React Hook Form</h2>
+      <form onSubmit={handleSubmit(submit)} autoComplete="on">
         <FormElem type="text" id="name" register={register} errors={errors} />
         <FormElem type="number" id="age" register={register} errors={errors} />
         <FormElem type="email" id="email" register={register} errors={errors} />
         <FormElem type="password" id="password" register={register} errors={errors} />
         <FormElem type="password" id="confirmPassword" register={register} errors={errors} />
-
         <div>
           <label htmlFor="gender">gender</label>
           <select {...register('gender')} id="gender">
@@ -46,11 +47,7 @@ export default function ControlledPage() {
           <label htmlFor="accept">accept</label>
           <input type="checkbox" {...register('accept')} id="accept" />
         </div>
-        <div>
-          <label htmlFor="picture">picture</label>
-          <input type="file" {...register('picture')} id="picture" />
-          <p className={'error-message'}>{errors.picture?.message}</p>
-        </div>
+        <FormElem type="file" id="picture" register={register} errors={errors} />
         <div>
           <label htmlFor="country">Countries</label>
           <input type="text" list="countries" {...register('country')} id="country" />
