@@ -12,6 +12,7 @@ export interface IFormInput {
   accept: boolean;
   picture: string | FileList;
   country: string;
+  isNew: boolean;
 }
 
 export const validationSchema = yup.object().shape({
@@ -66,6 +67,7 @@ export const defaultValues: IFormInput = {
   accept: false,
   picture: '',
   country: '',
+  isNew: false,
 };
 
 export const convertFileToBase64 = (file: File) => {

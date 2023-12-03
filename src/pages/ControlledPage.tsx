@@ -24,8 +24,15 @@ export default function ControlledPage() {
   const { setHookFormData } = useActions();
 
   const submit: SubmitHandler<IFormInput> = async (data) => {
+    data.isNew = true;
     data.picture = (await convertFileToBase64(data.picture[0] as unknown as File)) as string;
     setHookFormData(data);
+    setTimeout(() => {
+      setHookFormData({
+        ...data,
+        isNew: false,
+      });
+    }, 5000);
     navigate('/', { state: { from: '/react-hook-form', newData: data } });
   };
 

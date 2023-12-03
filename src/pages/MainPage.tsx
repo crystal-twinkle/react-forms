@@ -5,18 +5,22 @@ import '../style.css';
 
 export default function MainPage() {
   const { data, dataUn } = useAppSelector((state) => state.form);
+
   return (
     <div>
-      <Link to="react-hook-form">React Hook Form</Link>
+      <div className={data.isNew ? 'highlight' : ''}>
+        <Link to="react-hook-form">React Hook Form</Link>
+      </div>
       {data.picture && (
         <div className="image-container">
           <img src={typeof data.picture === 'string' ? data?.picture : ''} />
         </div>
       )}
-      <div />
-      <Link to="uncontrolled-form">Uncontrolled Form</Link>
+      <div className={dataUn.isNew ? 'highlight' : ''}>
+        <Link to="uncontrolled-form">Uncontrolled Form</Link>
+      </div>
       {dataUn.picture && (
-        <div>
+        <div className="image-container">
           <img src={typeof dataUn.picture === 'string' ? dataUn?.picture : ''} />)
         </div>
       )}

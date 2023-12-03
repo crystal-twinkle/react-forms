@@ -7,7 +7,7 @@ export interface IResponse {
 }
 
 export const countriesAPI = createApi({
-  reducerPath: 'PokemonAPI',
+  reducerPath: 'countriesApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://restcountries.com/v3.1' }),
   endpoints: (builder) => {
     return {
