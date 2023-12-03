@@ -57,15 +57,15 @@ export const validationSchema = yup.object().shape({
 export const resolver = yupResolver(validationSchema) as unknown as Resolver<IFormInput>;
 
 export const defaultValues: IFormInput = {
-  name: 'Kristina',
-  age: 18,
-  email: 'kristi@example.com',
-  password: 'ff$3]FFG43',
-  confirmPassword: 'ff$3]FFG43',
-  gender: 'Female',
-  accept: true,
+  name: '',
+  age: 0,
+  email: '',
+  password: '',
+  confirmPassword: '',
+  gender: '',
+  accept: false,
   picture: '',
-  country: 'Jordan',
+  country: '',
 };
 
 export const convertFileToBase64 = (file: File) => {
