@@ -12,11 +12,13 @@ export default function ControlledPage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<IFormInput>({
-    resolver,
     defaultValues,
+    resolver,
+    mode: 'onChange',
   });
+
   const navigate = useNavigate();
 
   const { setHookFormData } = useActions();
@@ -24,7 +26,7 @@ export default function ControlledPage() {
   const submit: SubmitHandler<IFormInput> = async (data) => {
     data.picture = (await convertFileToBase64(data.picture[0] as unknown as File)) as string;
     setHookFormData(data);
-    navigate('/', { state: { from: '/react-hook-form' } });
+    navigate('/', { state: { from: '/react-hook-form', newData: data } });
   };
 
   return (
@@ -55,7 +57,9 @@ export default function ControlledPage() {
           <p className={'error-message'}>{errors.country?.message}</p>
         </div>
         <div>
-          <button type="submit">Submit</button>
+          <button disabled={!isValid} type="submit">
+            Submit
+          </button>
         </div>
       </form>
     </div>
